@@ -30,7 +30,7 @@ public class StudentController {
     }
 
     @GetMapping("/getStudentById/{id}")
-    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
+    @PreAuthorize("isAuthenticated()")
     public StudentResponse getStudentById(@PathVariable Long id) {
         return studentService.getStudentById(id);
     }
@@ -42,7 +42,7 @@ public class StudentController {
     }
 
     @PutMapping("/updateStudent/{id}")
-    @PreAuthorize("hasAnyAuthority('Admin', 'Student')")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public StudentResponse UpdateStudent(@PathVariable Long id,
                                     @RequestBody StudentRequest studentRequest) throws IOException {
         return studentService.updateStudent(id, studentRequest);

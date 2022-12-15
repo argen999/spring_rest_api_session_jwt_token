@@ -1,8 +1,6 @@
 package com.peaksoft.security;
 
-/**
- * author: Ulansky
- */
+
 public class ValidationExceptionType {
 
     public static final String SUCCESSFUL = "Successful";

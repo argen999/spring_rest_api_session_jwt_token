@@ -12,9 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-/**
- * author: Ulansky
- */
+
 @Service
 public class JwtTokenUtil {
 

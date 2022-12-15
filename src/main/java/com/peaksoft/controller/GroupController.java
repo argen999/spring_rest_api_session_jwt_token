@@ -21,19 +21,19 @@ public class GroupController {
     private final StudentService studentService;
 
     @GetMapping("/getAllGroup")
-    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
+    @PreAuthorize("isAuthenticated()")
     public List<GroupResponse> getAllGroup() {
         return groupService.getAllGroup();
     }
 
     @GetMapping("/getAllGroupByCourseId/{courseId}")
-    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
+    @PreAuthorize("isAuthenticated()")
     public List<GroupResponse> getAllGroupByCourseId(@PathVariable Long courseId) {
         return groupService.getAllGroup(courseId);
     }
 
     @GetMapping("/getGroupById/{id}")
-    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
+    @PreAuthorize("isAuthenticated()")
     public GroupResponse getGroupById(@PathVariable Long id) {
         return groupService.getGroupById(id);
     }
@@ -62,4 +62,5 @@ public class GroupController {
                                           @PathVariable Long groupId) throws IOException {
         return studentService.assignStudent(id, groupId);
     }
+
 }

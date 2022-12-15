@@ -35,19 +35,19 @@ public class LessonController {
     }
 
     @PostMapping("/saveLesson/{courseId}")
-    @PreAuthorize("hasAnyAuthority('Instructor')")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public LessonResponse saveLesson(@PathVariable Long courseId, @RequestBody LessonRequest lessonRequest) {
         return lessonService.saveLesson(courseId, lessonRequest);
     }
 
     @PutMapping("/updateLesson/{id}")
-    @PreAuthorize("hasAnyAuthority('Instructor')")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public LessonResponse updateLesson(@PathVariable Long id, @RequestBody LessonRequest lessonRequest) {
         return lessonService.updateLesson(id, lessonRequest);
     }
 
     @DeleteMapping("/deleteLessonById/{id}")
-    @PreAuthorize("hasAnyAuthority('Instructor')")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public LessonResponse deleteLessonById(@PathVariable Long id) {
         return lessonService.deleteLesson(id);
     }

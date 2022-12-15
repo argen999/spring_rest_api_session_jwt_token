@@ -35,20 +35,20 @@ public class TaskController {
     }
 
     @PostMapping("/saveTask/{lessonId}")
-    @PreAuthorize("hasAnyAuthority('Instructor')")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public TaskResponse saveTask(@PathVariable Long lessonId, @RequestBody TaskRequest taskRequest) {
         return taskService.saveTask(lessonId, taskRequest);
     }
 
     @PutMapping("/updateTask/{id}")
-    @PreAuthorize("hasAnyAuthority('Instructor')")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public TaskResponse updateTask(@PathVariable Long id,
                                  @RequestBody TaskRequest taskRequest) {
         return taskService.updateTask(id, taskRequest);
     }
 
     @DeleteMapping("/deleteTaskById/{id}")
-    @PreAuthorize("hasAnyAuthority('Instructor')")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public TaskResponse deleteTaskById(@PathVariable Long id) {
         return taskService.deleteTask(id);
     }

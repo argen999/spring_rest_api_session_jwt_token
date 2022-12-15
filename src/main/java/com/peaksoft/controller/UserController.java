@@ -19,9 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * author: Ulansky
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/jwt")
@@ -69,13 +66,13 @@ public class UserController {
     }
 
     @PutMapping("/updateUser/{id}")
-    @PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public UserResponse updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
         return userService.updateUser(id, userRequest);
     }
 
     @DeleteMapping("/deleteUser/{id}")
-    @PreAuthorize("hasAuthority('Admin')")
+    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public UserResponse deleteUser(@PathVariable Long id) {
         return userService.deleteUser(id);
     }

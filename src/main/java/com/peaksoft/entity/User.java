@@ -1,26 +1,29 @@
 package com.peaksoft.entity;
 
+import com.peaksoft.repository.UserRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * author: Ulansky
- */
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
+
 public class User implements UserDetails{
 
     @Id
@@ -75,4 +78,10 @@ public class User implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
+    public void addRole(Role role) {
+        if (roles == null) roles = new ArrayList<>();
+        roles.add(role);
+    }
+
 }

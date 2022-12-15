@@ -18,19 +18,19 @@ public class InstructorController {
     private final InstructorService instructorService;
 
     @GetMapping("/getAllInstructor")
-    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
+    @PreAuthorize("isAuthenticated()")
     public List<InstructorResponse> getAllInstructor() {
         return instructorService.getAllInstructor();
     }
 
     @GetMapping("/getAllInstructorByCourseId/{courseId}")
-    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
+    @PreAuthorize("isAuthenticated()")
     public List<InstructorResponse> getAllInstructorByCourseId(@PathVariable Long courseId) {
         return instructorService.getAllInstructor(courseId);
     }
 
     @GetMapping("/getInstructorById/{id}")
-    @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
+    @PreAuthorize("isAuthenticated()")
     public InstructorResponse getInstructorById(@PathVariable Long id) {
         return instructorService.getInstructorById(id);
     }

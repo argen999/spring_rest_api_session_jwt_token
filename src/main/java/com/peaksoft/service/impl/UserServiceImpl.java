@@ -4,6 +4,7 @@ import com.peaksoft.converter.user.UserConverterRequest;
 import com.peaksoft.converter.user.UserConverterResponse;
 import com.peaksoft.dto.request.UserRequest;
 import com.peaksoft.dto.response.UserResponse;
+import com.peaksoft.entity.Role;
 import com.peaksoft.entity.User;
 import com.peaksoft.repository.UserRepository;
 import com.peaksoft.service.UserService;
@@ -13,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.List;
 
 @Service
@@ -37,8 +40,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse saveUser(UserRequest userRequest) {
+        Role role = new Role();
+        role.setRoleName("Student");
         User user = userConverterRequest.create(userRequest);
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.addRole(role);
         userRepository.save(user);
         return userConverterResponse.create(user);
     }
@@ -60,6 +66,41 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("not found email"));
+    }
+
+
+    @PostConstruct
+    public User addUser() {
+        Role role = new Role();
+        role.setRoleName("Admin");
+        User user = new User();
+        user.setEmail("esen@gmail.com");
+        user.setPassword("esen");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setFirstName("Esen");
+        user.addRole(role);
+        userRepository.save(user);
+        instructor();
+        return user;
+    }
+
+    public User instructor() {
+        Role role = new Role();
+        role.setRoleName("Instructor");
+        User user = new User();
+        user.setEmail("allanov@gmail.com");
+        user.setPassword("allanov");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setFirstName("Muchammed");
+        user.addRole(role);
+        userRepository.save(user);
+        return user;
+    }
+
+    @PreDestroy
+    public void deleteUser() {
+        userRepository.delete(instructor());
+        userRepository.delete(addUser());
     }
 
 }

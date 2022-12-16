@@ -33,7 +33,7 @@ public class CourseController {
     @GetMapping("/getAllCourseByCompanyId/{companyId}")
     @PreAuthorize("isAuthenticated()")
     public List<CourseResponse> getAllCourseByCompanyId(@PathVariable Long companyId) {
-        return courseService.getAllCourse(companyId);
+        return courseService.getAllCourseByCompanyId(companyId);
     }
 
     @GetMapping("/getCourseById/{id}")
@@ -57,20 +57,20 @@ public class CourseController {
     @DeleteMapping("/deleteCourseById/{id}/{groupId}")
     @PreAuthorize("hasAuthority('Admin')")
     public CourseResponse deleteCourseById(@PathVariable Long id, @PathVariable Long groupId) {
-        return courseService.deleteCourse(groupId, id);
+        return courseService.deleteCourseById(groupId, id);
     }
 
     @PostMapping("assignGroupToCourse/{courseId}/{id}")
     @PreAuthorize("hasAuthority('Admin')")
     private GroupResponse assignGroupToCourse(@PathVariable Long courseId,
                                               @PathVariable Long id) throws IOException {
-        return groupService.assignGroup(courseId, id);
+        return groupService.assignGroupToCourse(courseId, id);
     }
 
-    @PostMapping("/assignInstructor/{id}/{courseId}")
+    @PostMapping("/assignInstructorToCourse/{id}/{courseId}")
     @PreAuthorize("hasAuthority('Admin')")
     private InstructorResponse assignInstructorToCourse(@PathVariable Long id,
                                                         @PathVariable Long courseId) throws IOException {
-        return instructorService.assignInstructor(id, courseId);
+        return instructorService.assignInstructorToCourse(id, courseId);
     }
 }

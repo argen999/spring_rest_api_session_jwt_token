@@ -30,7 +30,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponse> getAllTask(Long lessonId) {
+    public List<TaskResponse> getAllTaskByLessonId(Long lessonId) {
         Lesson lesson = lessonRepository.findById(lessonId).get();
         return taskConverterResponse.getAll(lesson.getTasks());
     }
@@ -58,7 +58,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskResponse deleteTask(Long id) {
+    public TaskResponse deleteTaskById(Long id) {
         Task task = taskRepository.findById(id).get();
         taskRepository.delete(task);
         return taskConverterResponse.create(task);

@@ -25,7 +25,7 @@ public class LessonController {
     @GetMapping("/getAllLessonByCourseId/{courseId}")
     @PreAuthorize("isAuthenticated()")
     public List<LessonResponse> getAllInstructorByCourseId(@PathVariable Long courseId) {
-        return lessonService.getAllLesson(courseId);
+        return lessonService.getAllLessonByCourseId(courseId);
     }
 
     @GetMapping("/getLessonById/{id}")
@@ -49,6 +49,6 @@ public class LessonController {
     @DeleteMapping("/deleteLessonById/{id}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public LessonResponse deleteLessonById(@PathVariable Long id) {
-        return lessonService.deleteLesson(id);
+        return lessonService.deleteLessonById(id);
     }
 }

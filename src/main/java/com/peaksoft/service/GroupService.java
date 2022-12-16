@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface GroupService {
     List<GroupResponse> getAllGroup();
-    List<GroupResponse> getAllGroup(Long courseId);
+    List<GroupResponse> getAllGroupByCourseId(Long courseId);
     GroupResponse getGroupById(Long id);
     GroupResponse saveGroup(Long courseId, GroupRequest groupRequest);
     GroupResponse updateGroup(Long id, GroupRequest groupRequest);
-    GroupResponse deleteGroup(Long courseId, Long id);
-    GroupResponse assignGroup(Long courseId, Long id) throws IOException;
+    GroupResponse deleteGroupById(Long courseId, Long id);
+    GroupResponse assignGroupToCourse(Long courseId, Long id) throws IOException;
 }

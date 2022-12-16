@@ -16,4 +16,5 @@ public interface UserService extends UserDetailsService {
     UserResponse deleteUser(Long id);
     @Override
     UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+
 }

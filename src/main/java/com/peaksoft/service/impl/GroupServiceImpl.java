@@ -31,7 +31,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupResponse> getAllGroup(Long courseId) {
+    public List<GroupResponse> getAllGroupByCourseId(Long courseId) {
         Course course = courseRepository.findById(courseId).get();
         return groupConverterResponse.getAll(course.getGroups());
     }
@@ -59,7 +59,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupResponse deleteGroup(Long courseId, Long id) {
+    public GroupResponse deleteGroupById(Long courseId, Long id) {
         Course course = courseRepository.findById(courseId).get();
         Group group = groupRepository.findById(id).get();
         for (Course c : group.getCourses()) {
@@ -76,7 +76,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupResponse assignGroup(Long courseId, Long id) throws IOException {
+    public GroupResponse assignGroupToCourse(Long courseId, Long id) throws IOException {
         Group group = groupRepository.findById(id).get();
         Course course = courseRepository.findById(courseId).get();
         if (course.getGroups() != null) {

@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface TaskService {
     List<TaskResponse> getAllTask();
-    List<TaskResponse> getAllTask(Long lessonId);
+    List<TaskResponse> getAllTaskByLessonId(Long lessonId);
     TaskResponse getTaskById(Long id);
     TaskResponse saveTask(Long lessonId, TaskRequest taskRequest);
     TaskResponse updateTask(Long id, TaskRequest taskRequest);
-    TaskResponse deleteTask(Long id);
+    TaskResponse deleteTaskById(Long id);
 }

@@ -32,7 +32,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentResponse> getAllStudent(Long groupId) {
+    public List<StudentResponse> getAllStudentByGroupId(Long groupId) {
         Group group = groupRepository.findById(groupId).get();
         return studentConverterResponse.getAll(group.getStudents());
     }
@@ -68,7 +68,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentResponse deleteStudent(Long id) {
+    public StudentResponse deleteStudentById(Long id) {
         Student student = studentRepository.findById(id).get();
         for (Course c : student.getGroup().getCourses()) {
             c.getCompany().minus();
@@ -83,7 +83,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public StudentResponse assignStudent(Long id, Long groupId) throws IOException {
+    public StudentResponse assignStudentToGroup(Long id, Long groupId) throws IOException {
         Student student = studentRepository.findById(id).get();
         Group group = groupRepository.findById(groupId).get();
         if (group.getStudents() != null) {

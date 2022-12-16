@@ -29,7 +29,7 @@ public class GroupController {
     @GetMapping("/getAllGroupByCourseId/{courseId}")
     @PreAuthorize("isAuthenticated()")
     public List<GroupResponse> getAllGroupByCourseId(@PathVariable Long courseId) {
-        return groupService.getAllGroup(courseId);
+        return groupService.getAllGroupByCourseId(courseId);
     }
 
     @GetMapping("/getGroupById/{id}")
@@ -38,29 +38,29 @@ public class GroupController {
         return groupService.getGroupById(id);
     }
 
-    @PostMapping("saveGroup/{courseId}")
+    @PostMapping("/saveGroup/{courseId}")
     @PreAuthorize("hasAuthority('Admin')")
     public GroupResponse saveGroup(@PathVariable Long courseId, @RequestBody GroupRequest groupRequest) {
         return groupService.saveGroup(courseId, groupRequest);
     }
 
-    @PutMapping("/updateGroupByCourseId/{id}")
+    @PutMapping("/updateGroup/{id}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    public GroupResponse updateGroupByCourseId(@PathVariable Long id, @RequestBody GroupRequest groupRequest) {
+    public GroupResponse updateGroup(@PathVariable Long id, @RequestBody GroupRequest groupRequest) {
         return groupService.updateGroup(id, groupRequest);
     }
 
     @DeleteMapping("/deleteGroupById/{courseId}/{id}")
     @PreAuthorize("hasAuthority('Admin')")
     public GroupResponse deleteGroupById(@PathVariable Long courseId, @PathVariable Long id) {
-        return groupService.deleteGroup(courseId, id);
+        return groupService.deleteGroupById(courseId, id);
     }
 
-    @PostMapping("/assignStudent/{id}/{groupId}")
+    @PostMapping("/assignStudentToGroup/{id}/{groupId}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    private StudentResponse assignStudent(@PathVariable Long id,
+    private StudentResponse assignStudentToGroup(@PathVariable Long id,
                                           @PathVariable Long groupId) throws IOException {
-        return studentService.assignStudent(id, groupId);
+        return studentService.assignStudentToGroup(id, groupId);
     }
 
 }

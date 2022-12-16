@@ -32,7 +32,7 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
-    public List<InstructorResponse> getAllInstructor(Long courseId) {
+    public List<InstructorResponse> getAllInstructorByCourseId(Long courseId) {
         Course course = courseRepository.findById(courseId).get();
         return instructorConverterResponse.getAll(course.getInstructors());
     }
@@ -65,14 +65,14 @@ public class InstructorServiceImpl implements InstructorService {
     }
 
     @Override
-    public InstructorResponse deleteInstructor(Long id) {
+    public InstructorResponse deleteInstructorById(Long id) {
         Instructor instructor = instructorRepository.findById(id).get();
         instructorRepository.delete(instructor);
         return instructorConverterResponse.create(instructor);
     }
 
     @Override
-    public InstructorResponse assignInstructor(Long id, Long courseId) throws IOException {
+    public InstructorResponse assignInstructorToCourse(Long id, Long courseId) throws IOException {
         Instructor instructor = instructorRepository.findById(id).get();
         Course course = courseRepository.findById(courseId).get();
         if (course.getInstructors() != null) {
@@ -88,4 +88,5 @@ public class InstructorServiceImpl implements InstructorService {
         instructorRepository.save(instructor);
         return instructorConverterResponse.create(instructor);
     }
+
 }

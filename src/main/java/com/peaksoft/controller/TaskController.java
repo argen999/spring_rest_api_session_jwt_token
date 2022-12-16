@@ -25,7 +25,7 @@ public class TaskController {
     @GetMapping("/getAllTaskByLessonId/{lessonId}")
     @PreAuthorize("isAuthenticated()")
     public List<TaskResponse> getAllTaskByLessonId(@PathVariable Long lessonId) {
-        return taskService.getAllTask(lessonId);
+        return taskService.getAllTaskByLessonId(lessonId);
     }
 
     @GetMapping("/getTaskById/{id}")
@@ -50,7 +50,7 @@ public class TaskController {
     @DeleteMapping("/deleteTaskById/{id}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public TaskResponse deleteTaskById(@PathVariable Long id) {
-        return taskService.deleteTask(id);
+        return taskService.deleteTaskById(id);
     }
 
 }

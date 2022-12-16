@@ -29,7 +29,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<LessonResponse> getAllLesson(Long courseId) {
+    public List<LessonResponse> getAllLessonByCourseId(Long courseId) {
         Course course = courseRepository.findById(courseId).get();
         return lessonConverterResponse.getAll(course.getLessons());
     }
@@ -57,7 +57,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public LessonResponse deleteLesson(Long id) {
+    public LessonResponse deleteLessonById(Long id) {
         Lesson lesson = lessonRepository.findById(id).get();
         lessonRepository.delete(lesson);
         return lessonConverterResponse.create(lesson);

@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.util.List;
 
 @Service
@@ -68,9 +67,17 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("not found email"));
     }
 
-
     @PostConstruct
-    public User addUser() {
+    public void initMethod() {
+        userRepository.findByEmail(admin().getEmail())
+                .ifPresent(userRepository::delete);
+        userRepository.save(admin());
+        userRepository.findByEmail(instructor().getEmail())
+                .ifPresent(userRepository::delete);
+        userRepository.save(instructor());
+    }
+
+    public User admin() {
         Role role = new Role();
         role.setRoleName("Admin");
         User user = new User();
@@ -79,8 +86,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setFirstName("Esen");
         user.addRole(role);
-        userRepository.save(user);
-        instructor();
         return user;
     }
 
@@ -93,14 +98,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setFirstName("Muchammed");
         user.addRole(role);
-        userRepository.save(user);
         return user;
-    }
-
-    @PreDestroy
-    public void deleteUser() {
-        userRepository.delete(instructor());
-        userRepository.delete(addUser());
     }
 
 }

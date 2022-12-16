@@ -26,7 +26,7 @@ public class InstructorController {
     @GetMapping("/getAllInstructorByCourseId/{courseId}")
     @PreAuthorize("isAuthenticated()")
     public List<InstructorResponse> getAllInstructorByCourseId(@PathVariable Long courseId) {
-        return instructorService.getAllInstructor(courseId);
+        return instructorService.getAllInstructorByCourseId(courseId);
     }
 
     @GetMapping("/getInstructorById/{id}")
@@ -44,13 +44,13 @@ public class InstructorController {
 
     @PutMapping("/updateInstructor/{id}")
     @PreAuthorize("hasAuthority('Admin')")
-    public InstructorResponse saveUpdateInstructor(@PathVariable Long id, @RequestBody InstructorRequest instructorRequest) throws IOException {
+    public InstructorResponse updateInstructor(@PathVariable Long id, @RequestBody InstructorRequest instructorRequest) throws IOException {
         return instructorService.updateInstructor(id, instructorRequest);
     }
 
     @DeleteMapping("/deleteInstructorById/{id}")
     @PreAuthorize("hasAuthority('Admin')")
     public InstructorResponse deleteInstructorById(@PathVariable Long id) {
-        return instructorService.deleteInstructor(id);
+        return instructorService.deleteInstructorById(id);
     }
 }

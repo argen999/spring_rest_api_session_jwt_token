@@ -33,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseResponse> getAllCourse(Long companyId) {
+    public List<CourseResponse> getAllCourseByCompanyId(Long companyId) {
         Company company = companyRepository.findById(companyId).get();
         return courseConvertResponse.getAll(company.getCourses());
     }
@@ -62,7 +62,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseResponse deleteCourse(Long groupId, Long id) {
+    public CourseResponse deleteCourseById(Long groupId, Long id) {
         Course course = courseRepository.findById(id).get();
         Group group = groupRepository.findById(groupId).get();
         group.remove(course);

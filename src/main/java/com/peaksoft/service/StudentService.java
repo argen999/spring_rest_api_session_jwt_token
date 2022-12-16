@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface StudentService {
     List<StudentResponse> getAllStudent();
-    List<StudentResponse> getAllStudent(Long groupId);
+    List<StudentResponse> getAllStudentByGroupId(Long groupId);
     StudentResponse getStudentById(Long id);
     StudentResponse saveStudent(Long groupId, StudentRequest studentRequest) throws IOException;
     StudentResponse updateStudent(Long id, StudentRequest studentRequest) throws IOException;
-    StudentResponse deleteStudent(Long id);
-    StudentResponse assignStudent(Long id, Long groupId) throws IOException;
+    StudentResponse deleteStudentById(Long id);
+    StudentResponse assignStudentToGroup(Long id, Long groupId) throws IOException;
 
 }

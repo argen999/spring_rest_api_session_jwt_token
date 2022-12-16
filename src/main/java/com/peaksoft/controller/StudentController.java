@@ -25,8 +25,8 @@ public class StudentController {
 
     @GetMapping("/getAllStudentByGroupId/{groupId}")
     @PreAuthorize("isAuthenticated()")
-    public List<StudentResponse> getAllStudentByCourseId(@PathVariable Long groupId) {
-        return studentService.getAllStudent(groupId);
+    public List<StudentResponse> getAllStudentByGroupId(@PathVariable Long groupId) {
+        return studentService.getAllStudentByGroupId(groupId);
     }
 
     @GetMapping("/getStudentById/{id}")
@@ -51,7 +51,7 @@ public class StudentController {
     @DeleteMapping("/deleteStudentById/{id}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
     public StudentResponse deleteStudentById(@PathVariable Long id) {
-        return studentService.deleteStudent(id);
+        return studentService.deleteStudentById(id);
     }
 
 }

@@ -58,7 +58,7 @@ public class GroupController {
 
     @PostMapping("/assignStudentToGroup/{id}/{groupId}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    private StudentResponse assignStudentToGroup(@PathVariable Long id,
+    public StudentResponse assignStudentToGroup(@PathVariable Long id,
                                           @PathVariable Long groupId) throws IOException {
         return studentService.assignStudentToGroup(id, groupId);
     }

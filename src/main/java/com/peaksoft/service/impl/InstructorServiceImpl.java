@@ -11,6 +11,7 @@ import com.peaksoft.repository.CourseRepository;
 import com.peaksoft.repository.InstructorRepository;
 import com.peaksoft.service.InstructorService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class InstructorServiceImpl implements InstructorService {
 
     private final CourseRepository courseRepository;
@@ -82,11 +84,13 @@ public class InstructorServiceImpl implements InstructorService {
                 }
             }
         }
+        instructor.getCourse().getInstructors().remove(instructor);
         instructor.setCourse(course);
         course.addInstructor(instructor);
         courseRepository.save(course);
         instructorRepository.save(instructor);
         return instructorConverterResponse.create(instructor);
     }
+
 
 }

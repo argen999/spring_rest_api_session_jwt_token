@@ -4,6 +4,7 @@ import com.peaksoft.dto.request.InstructorRequest;
 import com.peaksoft.dto.response.InstructorResponse;
 import com.peaksoft.service.InstructorService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/instructors")
+@Slf4j
 public class InstructorController {
 
     private final InstructorService instructorService;
@@ -53,4 +55,5 @@ public class InstructorController {
     public InstructorResponse deleteInstructorById(@PathVariable Long id) {
         return instructorService.deleteInstructorById(id);
     }
+
 }

@@ -62,15 +62,16 @@ public class CourseController {
 
     @PostMapping("assignGroupToCourse/{courseId}/{id}")
     @PreAuthorize("hasAuthority('Admin')")
-    private GroupResponse assignGroupToCourse(@PathVariable Long courseId,
+    public GroupResponse assignGroupToCourse(@PathVariable Long courseId,
                                               @PathVariable Long id) throws IOException {
         return groupService.assignGroupToCourse(courseId, id);
     }
 
-    @PostMapping("/assignInstructorToCourse/{id}/{courseId}")
+    @PostMapping("/{id}/{courseId}")
     @PreAuthorize("hasAuthority('Admin')")
-    private InstructorResponse assignInstructorToCourse(@PathVariable Long id,
+    public InstructorResponse assignInstructorToCourse(@PathVariable Long id,
                                                         @PathVariable Long courseId) throws IOException {
         return instructorService.assignInstructorToCourse(id, courseId);
     }
+
 }

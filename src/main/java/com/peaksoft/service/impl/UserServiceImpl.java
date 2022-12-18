@@ -9,6 +9,8 @@ import com.peaksoft.entity.User;
 import com.peaksoft.repository.UserRepository;
 import com.peaksoft.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,13 +21,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@ComponentScan("application.properties")
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserConverterRequest userConverterRequest;
     private final UserConverterResponse userConverterResponse;
     private final PasswordEncoder passwordEncoder;
-
 
     @Override
     public List<UserResponse> getAllUser() {
@@ -72,6 +74,7 @@ public class UserServiceImpl implements UserService {
         userRepository.findByEmail(admin().getEmail())
                 .ifPresent(userRepository::delete);
         userRepository.save(admin());
+
         userRepository.findByEmail(instructor().getEmail())
                 .ifPresent(userRepository::delete);
         userRepository.save(instructor());

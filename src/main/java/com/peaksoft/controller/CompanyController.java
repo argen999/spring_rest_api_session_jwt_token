@@ -19,31 +19,31 @@ public class CompanyController {
 
     @GetMapping("/getAllCompany")
     @PreAuthorize("isAuthenticated()")
-    public List<CompanyResponse> getAllCompany() {
+    List<CompanyResponse> getAllCompany() {
         return companyService.getAllCompany();
     }
 
     @GetMapping("/getCompanyById/{id}")
     @PreAuthorize("isAuthenticated()")
-    public CompanyResponse getCompanyById(@PathVariable Long id) {
+    CompanyResponse getCompanyById(@PathVariable Long id) {
         return companyService.getCompanyById(id);
     }
 
     @PostMapping("/saveCompany")
     @PreAuthorize("hasAuthority('Admin')")
-    public CompanyResponse saveCompany(@RequestBody CompanyRequest companyRequest) {
+    CompanyResponse saveCompany(@RequestBody CompanyRequest companyRequest) {
         return companyService.saveCompany(companyRequest);
     }
 
     @PutMapping("/updateCompany/{id}")
     @PreAuthorize("hasAuthority('Admin')")
-    public CompanyResponse updateCompany(@PathVariable Long id, @RequestBody CompanyRequest companyRequest) {
+    CompanyResponse updateCompany(@PathVariable Long id, @RequestBody CompanyRequest companyRequest) {
         return companyService.updateCompany(id, companyRequest);
     }
 
     @DeleteMapping("/deleteCompany/{id}")
     @PreAuthorize("hasAuthority('Admin')")
-    public CompanyResponse deleteCompany(@PathVariable Long id) {
+    CompanyResponse deleteCompany(@PathVariable Long id) {
         return companyService.deleteCompanyById(id);
     }
 

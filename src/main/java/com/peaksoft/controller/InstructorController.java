@@ -21,38 +21,38 @@ public class InstructorController {
 
     @GetMapping("/getAllInstructor")
     @PreAuthorize("isAuthenticated()")
-    public List<InstructorResponse> getAllInstructor() {
+    List<InstructorResponse> getAllInstructor() {
         return instructorService.getAllInstructor();
     }
 
     @GetMapping("/getAllInstructorByCourseId/{courseId}")
     @PreAuthorize("isAuthenticated()")
-    public List<InstructorResponse> getAllInstructorByCourseId(@PathVariable Long courseId) {
+    List<InstructorResponse> getAllInstructorByCourseId(@PathVariable Long courseId) {
         return instructorService.getAllInstructorByCourseId(courseId);
     }
 
     @GetMapping("/getInstructorById/{id}")
     @PreAuthorize("isAuthenticated()")
-    public InstructorResponse getInstructorById(@PathVariable Long id) {
+    InstructorResponse getInstructorById(@PathVariable Long id) {
         return instructorService.getInstructorById(id);
     }
 
     @PostMapping("/saveInstructor/{courseId}")
     @PreAuthorize("hasAuthority('Admin')")
-    public InstructorResponse saveInstructor(@PathVariable Long courseId,
+    InstructorResponse saveInstructor(@PathVariable Long courseId,
                                              @RequestBody InstructorRequest instructorRequest) throws IOException {
         return instructorService.saveInstructor(courseId, instructorRequest);
     }
 
     @PutMapping("/updateInstructor/{id}")
     @PreAuthorize("hasAuthority('Admin')")
-    public InstructorResponse updateInstructor(@PathVariable Long id, @RequestBody InstructorRequest instructorRequest) throws IOException {
+    InstructorResponse updateInstructor(@PathVariable Long id, @RequestBody InstructorRequest instructorRequest) throws IOException {
         return instructorService.updateInstructor(id, instructorRequest);
     }
 
     @DeleteMapping("/deleteInstructorById/{id}")
     @PreAuthorize("hasAuthority('Admin')")
-    public InstructorResponse deleteInstructorById(@PathVariable Long id) {
+    InstructorResponse deleteInstructorById(@PathVariable Long id) {
         return instructorService.deleteInstructorById(id);
     }
 

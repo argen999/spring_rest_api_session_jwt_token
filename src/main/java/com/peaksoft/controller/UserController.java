@@ -30,7 +30,7 @@ public class UserController {
     private final LoginConverter loginConverter;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> getLogin(@RequestBody UserRequest userRequest) {
+    ResponseEntity<LoginResponse> getLogin(@RequestBody UserRequest userRequest) {
         try {
             UsernamePasswordAuthenticationToken token =
                     new UsernamePasswordAuthenticationToken(userRequest.getEmail(),
@@ -49,34 +49,33 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public UserResponse registration(@RequestBody UserRequest userRequest) {
+    UserResponse registration(@RequestBody UserRequest userRequest) {
         return userService.saveUser(userRequest);
     }
 
     @GetMapping("/getAllUser")
     @PreAuthorize("isAuthenticated()")
-    public List<UserResponse> getAllUser() {
+    List<UserResponse> getAllUser() {
         return userService.getAllUser();
     }
 
     @GetMapping("/getUserById/{id}")
     @PreAuthorize("isAuthenticated()")
-    public UserResponse getUserById(@PathVariable Long id) {
+    UserResponse getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @PutMapping("/updateUser/{id}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    public UserResponse updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
+    UserResponse updateUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
         return userService.updateUser(id, userRequest);
     }
 
     @DeleteMapping("/deleteUser/{id}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    public UserResponse deleteUser(@PathVariable Long id) {
+    UserResponse deleteUser(@PathVariable Long id) {
         return userService.deleteUser(id);
     }
-
 
 
 }

@@ -18,37 +18,37 @@ public class LessonController {
 
     @GetMapping("/getAllLesson")
     @PreAuthorize("isAuthenticated()")
-    public List<LessonResponse> getAllLesson() {
+    List<LessonResponse> getAllLesson() {
         return lessonService.getAllLesson();
     }
 
     @GetMapping("/getAllLessonByCourseId/{courseId}")
     @PreAuthorize("isAuthenticated()")
-    public List<LessonResponse> getAllInstructorByCourseId(@PathVariable Long courseId) {
+    List<LessonResponse> getAllInstructorByCourseId(@PathVariable Long courseId) {
         return lessonService.getAllLessonByCourseId(courseId);
     }
 
     @GetMapping("/getLessonById/{id}")
     @PreAuthorize("isAuthenticated()")
-    public LessonResponse getLessonById(@PathVariable Long id) {
+    LessonResponse getLessonById(@PathVariable Long id) {
         return lessonService.getLessonById(id);
     }
 
     @PostMapping("/saveLesson/{courseId}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    public LessonResponse saveLesson(@PathVariable Long courseId, @RequestBody LessonRequest lessonRequest) {
+    LessonResponse saveLesson(@PathVariable Long courseId, @RequestBody LessonRequest lessonRequest) {
         return lessonService.saveLesson(courseId, lessonRequest);
     }
 
     @PutMapping("/updateLesson/{id}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    public LessonResponse updateLesson(@PathVariable Long id, @RequestBody LessonRequest lessonRequest) {
+    LessonResponse updateLesson(@PathVariable Long id, @RequestBody LessonRequest lessonRequest) {
         return lessonService.updateLesson(id, lessonRequest);
     }
 
     @DeleteMapping("/deleteLessonById/{id}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    public LessonResponse deleteLessonById(@PathVariable Long id) {
+    LessonResponse deleteLessonById(@PathVariable Long id) {
         return lessonService.deleteLessonById(id);
     }
 }

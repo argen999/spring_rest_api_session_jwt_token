@@ -19,38 +19,38 @@ public class StudentController {
 
     @GetMapping("/getAllStudent")
     @PreAuthorize("isAuthenticated()")
-    public List<StudentResponse> getAllStudent() {
+    List<StudentResponse> getAllStudent() {
         return studentService.getAllStudent();
     }
 
     @GetMapping("/getAllStudentByGroupId/{groupId}")
     @PreAuthorize("isAuthenticated()")
-    public List<StudentResponse> getAllStudentByGroupId(@PathVariable Long groupId) {
+    List<StudentResponse> getAllStudentByGroupId(@PathVariable Long groupId) {
         return studentService.getAllStudentByGroupId(groupId);
     }
 
     @GetMapping("/getStudentById/{id}")
     @PreAuthorize("isAuthenticated()")
-    public StudentResponse getStudentById(@PathVariable Long id) {
+    StudentResponse getStudentById(@PathVariable Long id) {
         return studentService.getStudentById(id);
     }
 
     @PostMapping("/saveStudent/{groupId}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    public StudentResponse saveStudent(@PathVariable Long groupId, @RequestBody StudentRequest studentRequest) throws IOException {
+    StudentResponse saveStudent(@PathVariable Long groupId, @RequestBody StudentRequest studentRequest) throws IOException {
         return studentService.saveStudent(groupId, studentRequest);
     }
 
     @PutMapping("/updateStudent/{id}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    public StudentResponse UpdateStudent(@PathVariable Long id,
+    StudentResponse UpdateStudent(@PathVariable Long id,
                                     @RequestBody StudentRequest studentRequest) throws IOException {
         return studentService.updateStudent(id, studentRequest);
     }
 
     @DeleteMapping("/deleteStudentById/{id}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    public StudentResponse deleteStudentById(@PathVariable Long id) {
+    StudentResponse deleteStudentById(@PathVariable Long id) {
         return studentService.deleteStudentById(id);
     }
 

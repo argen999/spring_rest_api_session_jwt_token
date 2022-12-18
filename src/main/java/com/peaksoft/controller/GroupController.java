@@ -22,43 +22,43 @@ public class GroupController {
 
     @GetMapping("/getAllGroup")
     @PreAuthorize("isAuthenticated()")
-    public List<GroupResponse> getAllGroup() {
+    List<GroupResponse> getAllGroup() {
         return groupService.getAllGroup();
     }
 
     @GetMapping("/getAllGroupByCourseId/{courseId}")
     @PreAuthorize("isAuthenticated()")
-    public List<GroupResponse> getAllGroupByCourseId(@PathVariable Long courseId) {
+    List<GroupResponse> getAllGroupByCourseId(@PathVariable Long courseId) {
         return groupService.getAllGroupByCourseId(courseId);
     }
 
     @GetMapping("/getGroupById/{id}")
     @PreAuthorize("isAuthenticated()")
-    public GroupResponse getGroupById(@PathVariable Long id) {
+    GroupResponse getGroupById(@PathVariable Long id) {
         return groupService.getGroupById(id);
     }
 
     @PostMapping("/saveGroup/{courseId}")
     @PreAuthorize("hasAuthority('Admin')")
-    public GroupResponse saveGroup(@PathVariable Long courseId, @RequestBody GroupRequest groupRequest) {
+    GroupResponse saveGroup(@PathVariable Long courseId, @RequestBody GroupRequest groupRequest) {
         return groupService.saveGroup(courseId, groupRequest);
     }
 
     @PutMapping("/updateGroup/{id}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    public GroupResponse updateGroup(@PathVariable Long id, @RequestBody GroupRequest groupRequest) {
+    GroupResponse updateGroup(@PathVariable Long id, @RequestBody GroupRequest groupRequest) {
         return groupService.updateGroup(id, groupRequest);
     }
 
     @DeleteMapping("/deleteGroupById/{courseId}/{id}")
     @PreAuthorize("hasAuthority('Admin')")
-    public GroupResponse deleteGroupById(@PathVariable Long courseId, @PathVariable Long id) {
+    GroupResponse deleteGroupById(@PathVariable Long courseId, @PathVariable Long id) {
         return groupService.deleteGroupById(courseId, id);
     }
 
     @PostMapping("/assignStudentToGroup/{id}/{groupId}")
     @PreAuthorize("hasAnyAuthority('Admin', 'Instructor')")
-    public StudentResponse assignStudentToGroup(@PathVariable Long id,
+    StudentResponse assignStudentToGroup(@PathVariable Long id,
                                           @PathVariable Long groupId) throws IOException {
         return studentService.assignStudentToGroup(id, groupId);
     }

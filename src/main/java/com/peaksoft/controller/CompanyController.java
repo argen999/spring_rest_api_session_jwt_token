@@ -1,11 +1,13 @@
 package com.peaksoft.controller;
 
+import com.peaksoft.converter.company.CompanyConverterResponse;
 import com.peaksoft.dto.request.CompanyRequest;
 import com.peaksoft.dto.response.CompanyResponse;
 import com.peaksoft.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -45,6 +47,14 @@ public class CompanyController {
     @PreAuthorize("hasAuthority('Admin')")
     CompanyResponse deleteCompany(@PathVariable Long id) {
         return companyService.deleteCompanyById(id);
+    }
+
+    @GetMapping("/pagination")
+    @PreAuthorize("isAuthenticated()")
+    CompanyConverterResponse findAllCompaniesPagination(@RequestParam String text,
+                                                        @RequestParam int page,
+                                                        @RequestParam int size) {
+        return companyService.getAllPagination(text, page, size);
     }
 
 }

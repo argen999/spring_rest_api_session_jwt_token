@@ -2,6 +2,7 @@ package com.peaksoft.entity;
 
 import com.peaksoft.entity.enums.StudyFormat;
 import javax.persistence.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

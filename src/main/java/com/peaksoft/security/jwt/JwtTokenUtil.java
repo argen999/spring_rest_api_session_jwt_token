@@ -22,10 +22,13 @@ public class JwtTokenUtil {
     private final static Long JWT_TOKEN_VALIDATION = 7 * 24 * 60 * 60 * 1000L;
 
     private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date
-                        (System.currentTimeMillis())).setExpiration
-                        (new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDATION))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDATION))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
     public String generateToken(UserDetails userDetails) {

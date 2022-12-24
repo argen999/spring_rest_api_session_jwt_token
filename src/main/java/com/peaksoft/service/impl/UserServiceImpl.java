@@ -60,6 +60,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse deleteUser(Long id) {
         User user = userRepository.findById(id).get();
+        for (Role r : user.getRoles()) {
+            r.getUsers().remove(user);
+        }
         userRepository.delete(user);
         return userConverterResponse.create(user);
     }

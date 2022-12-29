@@ -11,11 +11,21 @@ import com.peaksoft.entity.Student;
 import com.peaksoft.repository.GroupRepository;
 import com.peaksoft.repository.StudentRepository;
 import com.peaksoft.service.StudentService;
+import jdk.jshell.Snippet;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Status;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import org.webjars.NotFoundException;
 
 import java.io.IOException;
+import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,12 +49,14 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentResponse getStudentById(Long id) {
-        return studentConverterResponse.create(studentRepository.findById(id).get());
+        return studentConverterResponse.create(studentRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student with " + id + " not found!")));
     }
 
     @Override
     public StudentResponse saveStudent(Long groupId, StudentRequest studentRequest) throws IOException {
-        Group group = groupRepository.findById(groupId).get();
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student with " + groupId + " not found!"));
         for (Course c : group.getCourses()) {
             c.getCompany().plus();
         }
@@ -62,14 +74,16 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentResponse updateStudent(Long id, StudentRequest studentRequest) throws IOException {
-        Student student = studentRepository.findById(id).get();
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student with " + id + " not found!"));
         studentConverterRequest.update(student, studentRequest);
         return studentConverterResponse.create(studentRepository.save(student));
     }
 
     @Override
     public StudentResponse deleteStudentById(Long id) {
-        Student student = studentRepository.findById(id).get();
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student with " + id + " not found!"));
         for (Course c : student.getGroup().getCourses()) {
             c.getCompany().minus();
         }
@@ -84,8 +98,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentResponse assignStudentToGroup(Long id, Long groupId) throws IOException {
-        Student student = studentRepository.findById(id).get();
-        Group group = groupRepository.findById(groupId).get();
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Student with " + id + " not found!"));
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Group with " + id + " not found!"));
         if (group.getStudents() != null) {
             for (Student s : group.getStudents()) {
                 if (s.getId() == id) {
@@ -99,5 +115,6 @@ public class StudentServiceImpl implements StudentService {
         groupRepository.save(group);
         return studentConverterResponse.create(student);
     }
+
 
 }

@@ -11,10 +11,12 @@ import com.peaksoft.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -36,7 +38,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getUserById(Long id) {
-        return userConverterResponse.create(userRepository.findById(id).get());
+        return userConverterResponse.create(userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with " + id + " not found!")));
     }
 
     @Override
@@ -52,14 +55,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse updateUser(Long id, UserRequest userRequest) {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with " + id + " not found!"));
         userConverterRequest.update(user, userRequest);
         return userConverterResponse.create(userRepository.save(user));
     }
 
     @Override
     public UserResponse deleteUser(Long id) {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User with " + id + " not found!"));
         for (Role r : user.getRoles()) {
             r.getUsers().remove(user);
         }

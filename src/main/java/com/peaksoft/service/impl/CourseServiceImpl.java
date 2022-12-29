@@ -12,7 +12,9 @@ import com.peaksoft.repository.CourseRepository;
 import com.peaksoft.repository.GroupRepository;
 import com.peaksoft.service.CourseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +36,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<CourseResponse> getAllCourseByCompanyId(Long companyId) {
-        Company company = companyRepository.findById(companyId).get();
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with " + companyId + " not found!"));
         return courseConvertResponse.getAll(company.getCourses());
     }
 
@@ -46,7 +49,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseResponse saveCourse(Long companyId, CourseRequest courseRequest) throws IOException {
-        Company company = companyRepository.findById(companyId).get();
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with " + companyId + " not found!"));
         Course course = courseConvertRequest.create(courseRequest);
         company.addCourse(course);
         course.setCompany(company);
@@ -56,15 +60,20 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public CourseResponse updateCourse(Long id, CourseRequest courseRequest) {
-        Course course = courseRepository.findById(id).get();
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with " + id + " not found!"));
         courseConvertRequest.update(course, courseRequest);
         return courseConvertResponse.create(courseRepository.save(course));
     }
 
     @Override
     public CourseResponse deleteCourseById(Long groupId, Long id) {
-        Course course = courseRepository.findById(id).get();
-        Group group = groupRepository.findById(groupId).get();
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with " + id + " not found!"));
+
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Group with " + groupId + " not found!"));
+
         group.remove(course);
         courseRepository.delete(course);
         return courseConvertResponse.create(course);

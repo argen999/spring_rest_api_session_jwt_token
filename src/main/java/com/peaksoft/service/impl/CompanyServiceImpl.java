@@ -10,7 +10,9 @@ import com.peaksoft.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,29 +32,29 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyResponse getCompanyById(Long id) {
-        Company company = companyRepository.findById(id).get();
+        Company company = companyRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with " + id + " not found!"));
         return companyConverterResponse.create(company);
     }
 
     @Override
     public CompanyResponse saveCompany(CompanyRequest companyRequest) {
         Company company = companyConverterRequest.create(companyRequest);
-        companyRepository.save(company);
-        return companyConverterResponse.create(company);
+        return companyConverterResponse.create(companyRepository.save(company));
     }
 
     @Override
     public CompanyResponse updateCompany(Long id, CompanyRequest companyRequest) {
-        Company company = companyRepository.findById(id).get();
-        companyConverterRequest.update(company, companyRequest);
+        Company company = companyConverterRequest.update(companyRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with " + id + " not found!")), companyRequest);
         return companyConverterResponse.create(companyRepository.save(company));
     }
 
     @Override
     public CompanyResponse deleteCompanyById(Long id) {
-        Company company = companyRepository.findById(id).get();
-        companyRepository.delete(company);
-        return companyConverterResponse.create(company);
+        companyRepository.delete(companyRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Company with " + id + " not found!")));
+        return companyConverterResponse.create(companyRepository.findById(id).get());
     }
 
     @Override

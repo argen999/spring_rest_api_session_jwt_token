@@ -11,7 +11,9 @@ import com.peaksoft.repository.CourseRepository;
 import com.peaksoft.repository.GroupRepository;
 import com.peaksoft.service.GroupService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,18 +34,21 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<GroupResponse> getAllGroupByCourseId(Long courseId) {
-        Course course = courseRepository.findById(courseId).get();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with " + courseId + " not found!"));
         return groupConverterResponse.getAll(course.getGroups());
     }
 
     @Override
     public GroupResponse getGroupById(Long id) {
-        return groupConverterResponse.create(groupRepository.findById(id).get());
+        return groupConverterResponse.create(groupRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Group with " + id + " not found!")));
     }
 
     @Override
     public GroupResponse saveGroup(Long courseId, GroupRequest groupRequest) {
-        Course course = courseRepository.findById(courseId).get();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with " + courseId + " not found!"));
         Group group = groupConverterRequest.create(groupRequest);
         course.addGroup(group);
         group.addCourse(course);
@@ -53,15 +58,20 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupResponse updateGroup(Long id, GroupRequest groupRequest) {
-        Group group = groupRepository.findById(id).get();
+        Group group = groupRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Group with " + id + " not found!"));
         groupConverterRequest.update(group, groupRequest);
         return groupConverterResponse.create(groupRepository.save(group));
     }
 
     @Override
     public GroupResponse deleteGroupById(Long courseId, Long id) {
-        Course course = courseRepository.findById(courseId).get();
-        Group group = groupRepository.findById(id).get();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with " + courseId + " not found!"));
+
+        Group group = groupRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Group with " + id + " not found!"));
+
         for (Course c : group.getCourses()) {
             c.getCompany().minus();
         }
@@ -77,8 +87,12 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupResponse assignGroupToCourse(Long courseId, Long id) throws IOException {
-        Group group = groupRepository.findById(id).get();
-        Course course = courseRepository.findById(courseId).get();
+        Group group = groupRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Group with " + id + " not found!"));
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with " + courseId + " not found!"));
+
         if (course.getGroups() != null) {
             for (Group g : course.getGroups()) {
                 if (g.getId() == id) {

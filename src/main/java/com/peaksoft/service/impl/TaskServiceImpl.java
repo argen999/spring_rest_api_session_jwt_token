@@ -10,7 +10,9 @@ import com.peaksoft.repository.LessonRepository;
 import com.peaksoft.repository.TaskRepository;
 import com.peaksoft.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -31,18 +33,21 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskResponse> getAllTaskByLessonId(Long lessonId) {
-        Lesson lesson = lessonRepository.findById(lessonId).get();
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lesson with " + lessonId + " not found!"));
         return taskConverterResponse.getAll(lesson.getTasks());
     }
 
     @Override
     public TaskResponse getTaskById(Long id) {
-        return taskConverterResponse.create(taskRepository.findById(id).get());
+        return taskConverterResponse.create(taskRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task with " + id + " not found!")));
     }
 
     @Override
     public TaskResponse saveTask(Long lessonId, TaskRequest taskRequest) {
-        Lesson lesson = lessonRepository.findById(lessonId).get();
+        Lesson lesson = lessonRepository.findById(lessonId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lesson with " + lessonId + " not found!"));
         Task task = taskConverterRequest.create(taskRequest);
         lesson.addTask(task);
         task.setLesson(lesson);
@@ -52,14 +57,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponse updateTask(Long id, TaskRequest taskRequest) {
-        Task task = taskRepository.findById(id).get();
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task with " + id + " not found!"));
         taskConverterRequest.update(task, taskRequest);
         return taskConverterResponse.create(task);
     }
 
     @Override
     public TaskResponse deleteTaskById(Long id) {
-        Task task = taskRepository.findById(id).get();
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task with " + id + " not found!"));
         taskRepository.delete(task);
         return taskConverterResponse.create(task);
     }

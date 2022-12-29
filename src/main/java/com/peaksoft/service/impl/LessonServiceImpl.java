@@ -10,7 +10,9 @@ import com.peaksoft.repository.CourseRepository;
 import com.peaksoft.repository.LessonRepository;
 import com.peaksoft.service.LessonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -30,18 +32,21 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public List<LessonResponse> getAllLessonByCourseId(Long courseId) {
-        Course course = courseRepository.findById(courseId).get();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with " + courseId + " not found!"));
         return lessonConverterResponse.getAll(course.getLessons());
     }
 
     @Override
     public LessonResponse getLessonById(Long id) {
-        return lessonConverterResponse.create(lessonRepository.findById(id).get());
+        return lessonConverterResponse.create(lessonRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lesson with " + id + " not found!")));
     }
 
     @Override
     public LessonResponse saveLesson(Long courseId, LessonRequest lessonRequest) {
-        Course course = courseRepository.findById(courseId).get();
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course with " + courseId + " not found!"));
         Lesson lesson = lessonConverterRequest.create(lessonRequest);
         course.addLesson(lesson);
         lesson.setCourse(course);
@@ -51,14 +56,16 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public LessonResponse updateLesson(Long id, LessonRequest lessonRequest) {
-        Lesson lesson = lessonRepository.findById(id).get();
+        Lesson lesson = lessonRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lesson with " + id + " not found!"));
         lessonConverterRequest.update(lesson, lessonRequest);
         return lessonConverterResponse.create(lessonRepository.save(lesson));
     }
 
     @Override
     public LessonResponse deleteLessonById(Long id) {
-        Lesson lesson = lessonRepository.findById(id).get();
+        Lesson lesson = lessonRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lesson with " + id + " not found!"));
         lessonRepository.delete(lesson);
         return lessonConverterResponse.create(lesson);
     }

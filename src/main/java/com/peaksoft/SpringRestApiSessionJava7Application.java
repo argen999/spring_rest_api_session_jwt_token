@@ -7,5 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringRestApiSessionJava7Application {
     public static void main(String[] args) {
         SpringApplication.run(SpringRestApiSessionJava7Application.class, args);
+
     }
 }
